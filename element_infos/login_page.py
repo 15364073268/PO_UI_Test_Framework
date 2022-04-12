@@ -1,39 +1,46 @@
 #coding=gbk
 from selenium import webdriver
 import os
+import time
 from selenium.webdriver.common.by import By
 from common.log_utils import logger
+from common.base_page import BasePage
 
 
-now_path = os.path.dirname(__file__)
-driver_path = os.path.join(now_path,'../webdriver/chromedriver')
+class LoginPage(BasePage):
+    def __init__(self,driver):
+        super().__init__(driver)
 
-
-class LoginPage:
-    def __init__(self):
-        self.driver = webdriver.Chrome(executable_path=driver_path)
-        self.driver.implicitly_wait(10)
-        self.driver.maximize_window()
-        self.driver.get('http://47.107.178.45/zentao/www/index.php?m=user&f=login')
-        self.user_inputbox = self.driver.find_element(By.XPATH, '//input[@id="account"]')
-        self.password_inputbox = self.driver.find_element(By.XPATH, '//input[@name="password"]')
-        self.login_button = self.driver.find_element(By.XPATH, '//button[@id="submit"]')
+        self.username_inputbox={'element_name':'用户名输入框',
+                                'locator_type':'xpath',
+                                'locator_value':'//input[@id="account"]',
+                                'timeout':2}
+        self.password_inputbox = {'element_name': '用户名输入框',
+                                  'locator_type': 'xpath',
+                                  'locator_value': '//input[@name="password"]',
+                                  'timeout': 2}
+        self.login_button = {'element_name': '用户名输入框',
+                                  'locator_type': 'xpath',
+                                  'locator_value': '//button[@id="submit"]',
+                                  'timeout': 2}
 
     def input_username(self,username):
-        self.user_inputbox.send_keys(username)
-        logger.info('用户名输入:'+str(username))
+        self.input_message(self.username_inputbox,username)
 
     def input_password(self,password):
-        self.password_inputbox.send_keys(password)
-        logger.info('密码输入:' + str(password))
+        self.input_message(self.password_inputbox,password)
 
     def click_login(self):
-        self.login_button.click()
-        logger.info('点击登录')
+        self.ui_click(self.login_button)
+
 
 
 if __name__ == '__main__':
-    login_page = LoginPage()
-    login_page.input_username('test01')
-    login_page.input_password('newdream123')
-    login_page.click_login()
+    now_path = os.path.dirname(__file__)
+    driver_path = os.path.join(now_path, '../webdriver/chromedriver')
+    driver = webdriver.Chrome(executable_path=driver_path)
+    logginer = LoginPage(driver)
+    logginer.get_open('http://47.107.178.45/zentao/www/index.php?m=user&f=login')
+    logginer.input_username('test01')
+    logginer.input_password('newdream123')
+    logginer.click_login()
