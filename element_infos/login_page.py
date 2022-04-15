@@ -6,23 +6,30 @@ from selenium.webdriver.common.by import By
 from common.log_utils import logger
 from common.base_page import BasePage
 
+from common.element_data_utils import ExeclRead
+
 
 class LoginPage(BasePage):
     def __init__(self,driver):
         super().__init__(driver)
-
-        self.username_inputbox={'element_name':'用户名输入框',
-                                'locator_type':'xpath',
-                                'locator_value':'//input[@id="account"]',
-                                'timeout':2}
-        self.password_inputbox = {'element_name': '用户名输入框',
-                                  'locator_type': 'xpath',
-                                  'locator_value': '//input[@name="password"]',
-                                  'timeout': 2}
-        self.login_button = {'element_name': '用户名输入框',
-                                  'locator_type': 'xpath',
-                                  'locator_value': '//button[@id="submit"]',
-                                  'timeout': 2}
+        """第一版"""
+        # self.username_inputbox={'element_name':'用户名输入框',
+        #                         'locator_type':'xpath',
+        #                         'locator_value':'//input[@id="account"]',
+        #                         'timeout':2}
+        # self.password_inputbox = {'element_name': '用户名输入框',
+        #                           'locator_type': 'xpath',
+        #                           'locator_value': '//input[@name="password"]',
+        #                           'timeout': 2}
+        # self.login_button = {'element_name': '用户名输入框',
+        #                           'locator_type': 'xpath',
+        #                           'locator_value': '//button[@id="submit"]',
+        #                           'timeout': 2}
+        '''第二版'''
+        self.element_read = ExeclRead('login_page').execl_element_read()
+        self.username_inputbox = self.element_read['username_inputbox']
+        self.password_inputbox = self.element_read['password_inputbox']
+        self.login_button = self.element_read['login_button']
 
     def input_username(self,username):
         self.input_message(self.username_inputbox,username)
